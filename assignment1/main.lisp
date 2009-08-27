@@ -12,6 +12,9 @@
 (defun or2 (test1 test2)
   (or test1 test2)
 )
+(defun nilp2 (x)
+  (nilp x)
+)
 
 (defun find-columns (pred)
 	(cond 
@@ -41,7 +44,7 @@
 
     ; Issue with the way this base case goes ...
 		( T 
-			`(,(conv-string (first query)) (nth 1 (assoc ',(nth 1 query) row)) ,(nth 2 query) )
+			`(if (null (assoc ',(nth 1 query) row) ) () (,(conv-string (first query)) (nth 1 (assoc ',(nth 1 query) row)) ,(nth 2 query) ))
 		)
 	)	
 )
@@ -69,6 +72,6 @@
   (list 
     (funcall q '( (A 7)(B 6)(C 9) ) )
     (funcall q '( (A 6)(B 101) ) )
-    '(funcall q '( (C 6) ) )
+    (funcall q '( (C 6) ) )
   )
 )
