@@ -1,3 +1,7 @@
+(defun neq (x y)
+  ; Maybe I should be doing eql = "eq + =", where eq is true if same symbol
+  (not (= x y))
+)
 
 (set 'operators '((s-eq . eq) (s-le . <) (s-ge . >) (s-leq . <=) (s-geq . >=) (s-diff . neq)))
 ; Clean function for converting between operator terms
@@ -51,7 +55,7 @@
 
 (defun transformer (query)
 	(format T "~a~%" query)
-	`(lambda(row) ,( transformerR query) )
+	(eval `(lambda(row) ,( transformerR query) ))
 )
 
 (setq tq (transformer '(s-and (s-geq B 5) (s-le B 100))))
@@ -73,5 +77,6 @@
     (funcall q '( (A 7)(B 6)(C 9) ) )
     (funcall q '( (A 6)(B 101) ) )
     (funcall q '( (C 6) ) )
+    (funcall q '((Z 315) (B 324) (C 528) (D 618) (E 423) (F 275) (G 768) (H 689) (I 663) (J 266) (K 985) (L 94) (M 731) (N 903) (O 544) (P 702) (Q 558) (R 52) (S 34) (T 456) (U 43) (V 421) (W 97) (X 73) (Y 940) (A 756)) )
   )
 )
