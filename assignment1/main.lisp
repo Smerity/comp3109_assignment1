@@ -1,5 +1,5 @@
 
-(set 'operators '((s-eq . eq) (s-le . <) (s-ge . >) (s-leq . <=) (s-geq . >=) (s-diff . neq)))
+(set 'operators '((s-eq . eql) (s-le . <) (s-ge . >) (s-leq . <=) (s-geq . >=) (s-diff . neq)))
 ; Clean function for converting between operator terms
 (defun conv-string (str)
   (cdr (assoc str operators))
@@ -23,7 +23,7 @@
 ; define a not equal function because lisp does not recognise neq
 (defun neq (x y)
   ; Maybe I should be doing eql = "eq + =", where eq is true if same symbol
-  (not (= x y))
+  not (eql x y)
 )
 
 ; part 1:
@@ -33,10 +33,11 @@
 	  ; Recurse for AND OR and NOT
 	  ( (eql 's-and (first pred)) (union ( find-columns (nth 1 pred) ) ( find-columns (nth 2 pred) ))) 
 	  ( (eql 's-or  (first pred)) (union ( find-columns (nth 1 pred) ) ( find-columns (nth 2 pred) )))
-	  ( (eql 's-not (first pred)) (find-columns (rest pred) ))
+	  ; added nth 1 because rest pred, is a list
+	  ( (eql 's-not (first pred)) (find-columns (nth 1 pred)))
 	  
 	  ; The base case, when we are left with a single predicate return the column letter
-	  ( T  (list (first pred)) )
+	  ( T  (list (nth 1 pred)) )
 	)
 )
 
@@ -56,7 +57,8 @@
 		)
 		
 		( (eq 's-not (first query)) 
-			`(not ,(transformerR (rest query) ) )
+			; recurses with the not's argument
+			`(not ,(transformerR (nth 1 query) ) )
 		)
 		; The base case, recurse if its not in the AND OR or NOT case
 		( T
@@ -78,6 +80,8 @@
 	(eval `(lambda(row) ,( transformerR query) ))
 )
 
+;(load 'testcases1.l')
+;(load 'testcases2.l')
 ;(setq tq (transformer '(s-and (s-geq B 5) (s-le B 100))))
 
 ;(mapcar #tq spreadsheet)

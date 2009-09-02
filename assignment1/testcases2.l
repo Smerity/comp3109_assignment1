@@ -2,21 +2,21 @@
 ;
 
 (setq tq1 (transformer '(s-geq fuel 5))) 
-(#tq1 '((speed 300) (fuel 20)))
+(funcall tq1 '((speed 300) (fuel 20)))
 ; result T
-(#tq1 '((speed 40) (fuel 100))) 
+(funcall tq1 '((speed 40) (fuel 100))) 
 ; result T
 
 (setq tq2 (transformer '(s-and (s-geq fuel 5) (s-le fuel 100))))) 
-(#tq2 '((speed 300) (fuel 20)))
+(funcall tq2 '((speed 300) (fuel 20)))
 ; result T
-(#tq2 '((speed 40) (fuel 100))) 
+(funcall tq2 '((speed 40) (fuel 100))) 
 ; result nil
 
 (setq tq3 (transformer '(s-not (s-or (s-not (s-geq fuel 5)) (s-not (s-le fuel 100)))))) 
-(#tq3 '((speed 300) (fuel 20)))
+(funcall tq3 '((speed 300) (fuel 20)))
 ; result T
-(#tq3 '((speed 40) (fuel 100)))
+(funcall tq3 '((speed 40) (fuel 100)))
 ; result nil
 
 ; Association lists appear in two different formats (depending on LISP flavor, etc.). An 
